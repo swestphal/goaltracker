@@ -23,7 +23,7 @@ Keeps all of your projects in one place.
 
 ## Progress
 
-- :heavy_check_mark: express setup (Jan/2023)
+- [x] express setup (Jan/2023)
 - [x] connect mongo db
 - [x] basic routing with test routes
 - [x] user model
