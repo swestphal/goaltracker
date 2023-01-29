@@ -1,0 +1,38 @@
+{
+  "name": "goaltracker-server",
+  "version": "1.0.0",
+  "description": "",
+  "license": "",
+  "author": "Simone Westphal",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "config": "^3.3.9",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "debug": "~2.6.9",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.3",
+    "gravatar": "^1.8.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.0",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.18",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "eslint": "^8.32.0",
+    "eslint-config-standard-with-typescript": "^32.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-json-format": "^2.0.1",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.1",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.4"
+  }
+}
