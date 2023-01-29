@@ -1,6 +1,8 @@
 
 # Goaltracker
 
+## Features
+
 Keeps all of your projects in one place.
 
 :construction_worker: Signup and get free access
@@ -19,12 +21,13 @@ Keeps all of your projects in one place.
 
 &#10007; Create vision board
 
+## Progress
 
-- [x] express setup
+- :heavy_check_mark: express setup (Jan/2023)
 - [x] connect mongo db
 - [x] basic routing with test routes
 - [x] user model
-- [ ] request and body validation
+- [x] request and body validation
 - [ ] user registration
 - [ ] implement jwt
 - [ ] custom auth middleware & jwt verfiy
