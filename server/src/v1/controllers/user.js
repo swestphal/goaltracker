@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
             config.get('TOKEN_SECRET_KEY'),
             { expiresIn: '24h' }
         )
-        res.status(201).json({ user, token })
+        res.status(201).json({ token })
     } catch (err) {
         res.status(500).json(err)
     }
