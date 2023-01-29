@@ -21,4 +21,5 @@ const UserSchema = new mongoose.Schema({
     }
 }, schemaOptions)
 
-module.exports = mongoose.model('User', UserSchema)
+// exort like this to avoid OverwriteModelError: Cannot overwrite `User` model once compiled.
+module.exports = mongoose.models.User || mongoose.model('User', UserSchema)
