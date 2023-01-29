@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
         await User.create(user)
 
         const token = jsonwebtoken.sign(
-            { id: user._id },
+            { user: { id: user._id } },
             config.get('TOKEN_SECRET_KEY'),
             { expiresIn: '24h' }
         )
