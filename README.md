@@ -23,13 +23,27 @@ Keeps all of your projects in one place.
 
 ## Progress
 
+### Backend API
 - [x] express setup (Jan/2023)
 - [x] connect mongo db
 - [x] basic routing with test routes
 - [x] user model
 - [x] request and body validation
-- [ ] user registration
-- [ ] implement jwt
-- [ ] custom auth middleware & jwt verfiy
-- [ ] user authentication 
+- [x] user registration
+- [x] implement jwt
+- [x] custom auth middleware & jwt verfiy
+- [x] user authentication 
 - [ ] login route
+
+
+### Frontend
+
+- [ ] react setup
+- [ ] layout
+- [ ] page register
+- [ ] page login
+- [ ] email setup
+- [ ] registration email
+- [ ] password forgotten email
+
+
