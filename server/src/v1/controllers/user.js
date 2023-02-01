@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('./../models/user')
 const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const gravatar = require('gravatar')
