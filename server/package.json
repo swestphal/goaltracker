@@ -6,7 +6,8 @@
   "author": "Simone Westphal",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
