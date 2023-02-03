@@ -9,7 +9,7 @@ const app = express()
 app.use(cors())
 app.use(logger('dev'))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true })) // allows values to be of any type
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
