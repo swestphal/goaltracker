@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Profile = require('./../models/Profile')
-const User = require('./../models/User')
 const auth = require('./../middleware/auth')
 const { body } = require('express-validator')
 const validation = require('./../middleware/validation')
@@ -17,6 +16,22 @@ router.get('/me', auth.verifyToken, async (req, res) => {
             return res.status(400).json({ msg: 'No profile available' })
         }
         res.json(profile)
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send('Server Error')
+    }
+})
+
+// @route   GET api/v1/profile
+// @desc    Get all profiles
+// @access  Public
+router.get('/', async (req, res) => {
+    try {
+        const profiles = await Profile.find().populate('user', ['username', 'avatar'])
+        if (!profiles) {
+            return res.status(400).json({ msg: 'No profile available' })
+        }
+        res.json(profiles)
     } catch (error) {
         console.error(error.message)
         res.status(500).send('Server Error')
