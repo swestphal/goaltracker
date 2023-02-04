@@ -8,47 +8,30 @@ const profileController = require('../controllers/profile')
 
 // @route   GET api/v1/profile/me
 // @desc    Get current users profile
-// @access  Private
-router.get('/me', auth.verifyToken, async (req, res) => {
-    try {
-        const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['username', 'avatar'])
-        if (!profile) {
-            return res.status(400).json({ msg: 'No profile available' })
-        }
-        res.json(profile)
-    } catch (error) {
-        console.error(error.message)
-        res.status(500).send('Server Error')
-    }
-})
+// @access  Protected
+router.get('/me',
+    auth.verifyToken,
+    profileController.me
+)
 
-// @route   GET api/v1/profile
+// @route   GET api/v1/profile/all
 // @desc    Get all profiles
-// @access  Public
-router.get('/', async (req, res) => {
-    try {
-        const profiles = await Profile.find().populate('user', ['username', 'avatar'])
-        if (!profiles) {
-            return res.status(400).json({ msg: 'No profile available' })
-        }
-        res.json(profiles)
-    } catch (error) {
-        console.error(error.message)
-        res.status(500).send('Server Error')
-    }
-})
+// @access  Protected
+router.get('/all',
+    auth.verifyToken,
+    profileController.getAll
+)
 
 // @route   POST api/v1/profile
 // @desc    Create or update user profile
-// @access  Protected
+// @access  Private
 router.post('/',
     auth.verifyToken, [
         body('status', 'Status is required').not().isEmpty(),
         body('skills', 'Skills is required').not().isEmpty()
     ],
     validation.validate,
-    profileController.update,
-    (req, res) => {
-        res.send('User route')
-    })
+    profileController.create
+)
+
 module.exports = router

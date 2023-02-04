@@ -1,6 +1,6 @@
 const Profile = require('../models/profile')
 
-exports.update = async (req, res) => {
+exports.create = async (req, res) => {
     // const skills = req.body.skills.split(',').map(skill => skill.trim())
     const updatedFields = {
         ...req.body,
@@ -25,5 +25,31 @@ exports.update = async (req, res) => {
         }
     } catch (err) {
         res.status(500).json(err)
+    }
+}
+
+exports.me = async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['username', 'avatar'])
+        if (!profile) {
+            return res.status(400).json({ msg: 'No profile available' })
+        }
+        res.json(profile)
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send('Server Error')
+    }
+}
+
+exports.getAll = async (req, res) => {
+    try {
+        const profiles = await Profile.find().populate('user', ['username', 'avatar'])
+        if (!profiles) {
+            return res.status(400).json({ msg: 'No profile available' })
+        }
+        res.json(profiles)
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send('Server Error')
     }
 }
