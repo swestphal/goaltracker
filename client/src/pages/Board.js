@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Board = () => {
-    return ( <>Board</> );
+  return ( <>Board</> );
 }
  
 export default Board;
