@@ -8,16 +8,16 @@ exports.verifyToken = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-    const { username, password } = req.body
+    const { email, password } = req.body
     try {
-        const user = await User.findOne({ username }).select('password username')
+        const user = await User.findOne({ email }).select('password username')
         // no user
         if (!user) {
             return res.status(401).json({
                 errors: [
                     {
-                        param: 'username',
-                        msg: 'Invalid username or password'
+                        param: 'email',
+                        msg: 'Invalid email or password'
                     }
                 ]
             })
@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
         user.password = undefined
 
         const token = jsonwebtoken.sign(
-            { id: user._id },
+            { user: { id: user._id } },
             config.get('TOKEN_SECRET_KEY'),
             { expiresIn: '24h' }
         )
