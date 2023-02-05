@@ -4,29 +4,24 @@ const auth = require('./../middleware/auth')
 const { body } = require('express-validator')
 const validation = require('./../middleware/validation')
 const userController = require('../controllers/user')
+const authController = require('../controllers/auth')
 
-// @route   GET api/v1/auth
+// @route   Post api/v1/auth/verify-token
 // @desc    Test route
 // @access  Protected
-router.get('/', auth.verifyToken, async (req, res) => {
-    try {
-        // const user = await User.findById(req.user.id).select('-password')
-        res.json(req.user)
-    } catch (error) {
-        console.error(error.message)
-        res.status(500).send('Server Error')
-    }
-})
+router.post('/verify-token',
+    auth.verifyToken,
+    authController.verifyToken
+)
 
-// @route   POST api/v1/auth
+// @route   POST api/v1/auth/login
 // @desc    Authenticate user and get token
 // @access  Public
 router.post('/', [
-    body('password', 'Paword is required').exists(),
+    body('password', 'Password is required').exists(),
     body('email', 'Please enter a valid email').isEmail()
 ],
 validation.validate,
-userController.login,
-(req, res) => res.send('Users route'))
+userController.login)
 
 module.exports = router
