@@ -16,7 +16,7 @@ router.post('/verify-token',
 // @route   POST api/v1/auth/login
 // @desc    Authenticate user and get token
 // @access  Public
-router.post('/',
+router.post('/login',
     [
         body('password', 'Password is required').exists(),
         body('email', 'Please enter a valid email').isEmail()

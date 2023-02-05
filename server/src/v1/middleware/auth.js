@@ -11,7 +11,7 @@ const User = require('./../models/User')
  */
 exports.verifyToken = async (req, res, next) => {
     const bearerHeader = req.headers.authorization
-
+    console.log(bearerHeader)
     if (!bearerHeader) {
         return res.status(401).json({ msg: 'No token - authorization denied' })
     }
@@ -21,6 +21,7 @@ exports.verifyToken = async (req, res, next) => {
             bearer, config.get('TOKEN_SECRET_KEY')
         )
         const userId = tokenDecoded.user.id
+
         const user = await User.findById(userId).select('-password')
         if (!user) return res.status(401).json('Unathorized')
         req.user = user
