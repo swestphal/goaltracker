@@ -10,13 +10,16 @@ const User = require('./../models/User')
  * @returns authenticated user
  */
 exports.verifyToken = async (req, res, next) => {
-    const token = req.header('x-auth-token')
+    const bearerHeader = req.headers.authorization
 
-    if (!token) {
+    if (!bearerHeader) {
         return res.status(401).json({ msg: 'No token - authorization denied' })
     }
     try {
-        const tokenDecoded = jsonwebtoken.verify(token, config.get('TOKEN_SECRET_KEY'))
+        const bearer = bearerHeader.split(' ')[1]
+        const tokenDecoded = jsonwebtoken.verify(
+            bearer, config.get('TOKEN_SECRET_KEY')
+        )
         const userId = tokenDecoded.user.id
         const user = await User.findById(userId).select('-password')
         if (!user) return res.status(401).json('Unathorized')
