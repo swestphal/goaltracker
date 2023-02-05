@@ -38,7 +38,9 @@ const AppLayout = () => {
         <Box sx={{
           flexGrow: 1,
           p: 1,
-          width: 'max-content'
+          height: '100vh',
+          width: 'max-content',
+          background: 'linear-gradient(to right bottom, #33a7ab, #6B0AC9)'
         }}>
           <Outlet />
         </Box>
