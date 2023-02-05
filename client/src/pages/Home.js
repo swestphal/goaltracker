@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box} from '@mui/material'
+import { Box } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import assets from '../assets';
 
@@ -11,7 +11,7 @@ const Home = () => {
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      <LoadingButton variant='outlined' sx={{borderColor:assets.palette.primary.main, color:assets.palette.primary.main}}>
+      <LoadingButton variant='outlined' sx={{ borderColor:assets.palette.primary.main, color:assets.palette.primary.main }}>
         Create a goal
       </LoadingButton>
     </Box> );

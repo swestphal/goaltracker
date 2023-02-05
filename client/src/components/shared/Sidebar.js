@@ -1,10 +1,10 @@
 import React from 'react'
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Drawer, IconButton, List, ListItem, Typography } from '@mui/material'
 import assets from '../../assets/index'
 import { Box } from '@mui/system'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 console.log(assets)
 const Sidebar = () => {
   const user = useSelector((state) => state.user.value)
@@ -23,7 +23,7 @@ const Sidebar = () => {
     sx={{
       width:sidebarWidth,
       height: '100%',
-      '& > div': { borderRight: 'none'}
+      '& > div': { borderRight: 'none' }
     }}>
     <List
       disablePadding
@@ -44,7 +44,7 @@ const Sidebar = () => {
             {user.username}
           </Typography>
           <IconButton onClick={logout}>
-            <LogoutOutlinedIcon sx={{color:assets.palette.primary.main}}/>
+            <LogoutOutlinedIcon sx={{ color:assets.palette.primary.main }}/>
           </IconButton>
         </Box>
       </ListItem>  

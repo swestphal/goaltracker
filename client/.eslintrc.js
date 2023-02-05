@@ -13,7 +13,7 @@ module.exports = {
     ecmaVersion: '2020',
     sourceType: 'module'
   },
-  plugins: ['react', 'json-format'],
+  plugins: [ 'react', 'json-format' ],
   rules: {
     quotes: [
       'error',
@@ -23,9 +23,12 @@ module.exports = {
       'error',
       2
     ],
+    'object-curly-spacing': [ 'error', 'always', { 'objectsInObjects': true } ],
+    'array-bracket-spacing': [ 'error', 'always', { 'arraysInArrays': false } ],
     'react/react-in-jsx-scope': 'off',
     'react/no-unescaped-entities': 'off',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    
   },
   settings: {
     react: {

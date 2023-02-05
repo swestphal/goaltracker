@@ -35,7 +35,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const res = await authApi.login({email, password})
+      const res = await authApi.login({ email, password })
       setLoading(false)
       localStorage.setItem('token', res.token)
       navigate('/')

@@ -1,4 +1,4 @@
-import { createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   value: {}
@@ -14,7 +14,7 @@ export const userSlice = createSlice({
   }
 })
 
-export const {setUser} = userSlice.actions
+export const { setUser } = userSlice.actions
 
 export default userSlice.reducer
 
