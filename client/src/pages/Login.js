@@ -40,9 +40,7 @@ const Login = () => {
       localStorage.setItem('token', res.token)
       navigate('/')
     } catch (err) {
-      console.log(err)
       const errors = err.data.errors
-      console.log(errors)
       errors.forEach(e => {
         if (e.param === 'email') {
           setEmailErrText(e.msg)
@@ -101,8 +99,7 @@ const Login = () => {
         component={Link}
         to='/signup'
         sx={{ textTransform: 'none' }}
-      >
-        Don't have an account? Signup
+      >Don't have an account? Signup
       </Button>
     </>
   )
