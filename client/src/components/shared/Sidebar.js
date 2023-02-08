@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Drawer, IconButton, List, ListItem, Typography } from '@mui/material'
+import { Drawer, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material'
 import assets from '../../assets/index'
 import { Box } from '@mui/system'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
-
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 const Sidebar = () => {
   const [ activeIndex, setActiveIndex ] = useState(0)
   const user = useSelector((state) => state.user.value)
@@ -49,6 +49,9 @@ const Sidebar = () => {
     navigate('/login')
   }
 
+  const onDragEnd = () => {
+
+  }
   return (<Drawer
     container={window.document.body}
     variant='permanent'
@@ -81,6 +84,40 @@ const Sidebar = () => {
           </IconButton>
         </Box>
       </ListItem>  
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable key={'list-board-droppable'} droppableId={'list-board-droppable'}>
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {
+                boards.map((item, index)=> (
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
+                    {(provided, snapshot)=> (
+                      <ListItemButton ref={provided.innerRe}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                        selected={index === activeIndex}
+                        component={Link}
+                        to={`/boards/${item.id}`}
+                        sx={{
+                          pl:'20px',
+                          cursor: snapshot.isDragging ? 'grab':'pointer!important'
+                        }}>
+                        <Typography 
+                          variant='body2'
+                          fontWeight='700'
+                          sx={{ whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                          {item.icon} {item.title}
+                        </Typography>
+                      </ListItemButton>
+                    )}
+                  </Draggable>
+                ))
+              }
+
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </List>
   </Drawer>
   )
