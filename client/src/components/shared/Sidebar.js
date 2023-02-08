@@ -9,6 +9,7 @@ import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
 
 const Sidebar = () => {
+  const [ activeIndex, setActiveIndex ] = useState(0)
   const user = useSelector((state) => state.user.value)
   const boards = useSelector((state) => state.board.value)
   const navigate= useNavigate()
@@ -38,6 +39,10 @@ const Sidebar = () => {
     console.log(boards)
   }, [ boards ])
 
+  const updateActive = (listBoards) => {
+    const activeItem = listBoards.findIndex(e=>e.id === boardId)
+    setActiveIndex(activeItem)
+  }
 
   const logout = ()=> {
     localStorage.removeItem('token')
