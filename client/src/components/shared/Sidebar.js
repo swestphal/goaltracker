@@ -4,7 +4,7 @@ import { Drawer, IconButton, List, ListItem, Typography } from '@mui/material'
 import assets from '../../assets/index'
 import { Box } from '@mui/system'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
 
@@ -13,13 +13,20 @@ const Sidebar = () => {
   const boards = useSelector((state) => state.board.value)
   const navigate= useNavigate()
   const dispatch = useDispatch()
+  const { boardId } = useParams()
   const sidebarWidth = 250
-
+  console.log(boardId)
+ 
   useEffect(()=> {
     const getBoards = async () => {
       try {
         const res = await boardApi.getAll()
+        console.log('res', res[0])
         dispatch(setBoards(res))
+        if(res.length > 0 && boardId === undefined) {
+          // if boards and no boardId show first of boards
+          navigate(`/boards/${res[0].id}`)
+        }
       } catch(err) {
         console.log(err)
       }
@@ -30,6 +37,7 @@ const Sidebar = () => {
   useEffect(()=> {
     console.log(boards)
   }, [ boards ])
+
 
   const logout = ()=> {
     localStorage.removeItem('token')
