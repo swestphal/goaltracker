@@ -4,17 +4,22 @@ import { Drawer, IconButton, List, ListItem, ListItemButton, Typography } from '
 import assets from '../../assets/index'
 import { Box } from '@mui/system'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { useStrictDroppable } from '../../utils/useStrictDroppable'
+
 const Sidebar = () => {
   const [ activeIndex, setActiveIndex ] = useState(0)
+  const [ loading, setLoading ] = useState(true)
   const user = useSelector((state) => state.user.value)
   const boards = useSelector((state) => state.board.value)
   const navigate= useNavigate()
   const dispatch = useDispatch()
   const { boardId } = useParams()
+  const [ enabled ] = useStrictDroppable(loading);
   const sidebarWidth = 250
   console.log(boardId)
  
@@ -23,7 +28,7 @@ const Sidebar = () => {
       try {
         const res = await boardApi.getAll()
         dispatch(setBoards(res))
-        
+        setLoading(false)
       } catch(err) {
         console.log(err)
       }
@@ -45,8 +50,21 @@ const Sidebar = () => {
     navigate('/login')
   }
 
-  const onDragEnd = () => {
-
+  const onDragEnd = async ({ source, destination }) => {
+    const newList = [ ...boards ]
+    // remove at source.index
+    const [ removed ] = newList.splice(source.index,1)
+    // insert removed element at destination.index
+    newList.splice(destination.index,0,removed)
+    
+    const activeItem = newList.findIndex(e => e.id === boardId)
+    setActiveIndex(activeItem)
+    dispatch(setBoards(newList))
+    try {
+      await boardApi.updatePosition({ boards: newList })
+    } catch (err) {
+      console.log(err)
+    }
   }
   return (<Drawer
     container={window.document.body}
@@ -79,9 +97,21 @@ const Sidebar = () => {
             <LogoutOutlinedIcon sx={{ color:assets.palette.primary.main }}/>
           </IconButton>
         </Box>
-      </ListItem>  
+      </ListItem>
+      <ListItem>
+        <Box sx={{
+          width:'100%',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'space-between'
+        }}>
+          <Typography fontWeight='400' fontSize={20}>
+            Favourites
+          </Typography>
+        </Box>
+      </ListItem>    
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable key={'list-board-droppable'} droppableId={'list-board-droppable'}>
+        {enabled && <Droppable key={'list-board-droppable'} droppableId={'list-board-droppable'}>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {
@@ -101,7 +131,7 @@ const Sidebar = () => {
                         }}>
                         <Typography 
                           variant='body2'
-                          fontWeight='700'
+                          fontWeight='600'
                           sx={{ whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
                           {item.icon} {item.title}
                         </Typography>
@@ -113,7 +143,7 @@ const Sidebar = () => {
 
             </div>
           )}
-        </Droppable>
+        </Droppable>}
       </DragDropContext>
     </List>
   </Drawer>
