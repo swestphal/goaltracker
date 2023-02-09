@@ -9,7 +9,7 @@ import { setUser } from '../../redux/features/userSlice'
 
 const AppLayout = () => {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(true)
+  const [ loading, setLoading ] = useState(true)
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -25,7 +25,7 @@ const AppLayout = () => {
     }
     checkAuth()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate])
+  }, [ navigate ])
 
   return (
     loading ? (
