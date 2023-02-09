@@ -50,6 +50,17 @@ const Sidebar = () => {
     navigate('/login')
   }
 
+  const addBoard = async() => {
+    try {
+      const res = await boardApi.create()
+      const newList = [ res, ...boards ]
+      dispatch(setBoards(newList))
+      navigate('/boards/$(res.id)')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const onDragEnd = async ({ source, destination }) => {
     const newList = [ ...boards ]
     // remove at source.index
@@ -108,6 +119,21 @@ const Sidebar = () => {
           <Typography fontWeight='400' fontSize={20}>
             Favourites
           </Typography>
+        </Box>
+      </ListItem>    
+      <ListItem>
+        <Box sx={{
+          width:'100%',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'space-between'
+        }}>
+          <Typography fontWeight='400' fontSize={20}>
+            Favourites
+          </Typography>
+          <IconButton onClick={addBoard}>
+            <AddBoxOutlinedIcon fontSize="small"></AddBoxOutlinedIcon>
+          </IconButton>
         </Box>
       </ListItem>    
       <DragDropContext onDragEnd={onDragEnd}>
