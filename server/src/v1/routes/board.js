@@ -19,4 +19,12 @@ router.post('/',
     boardController.create
 )
 
+// @route   PUT api/v1/board
+// @desc    Update position of board
+// @access  Protected
+router.put('/',
+    auth.verifyToken,
+    boardController.updatePosition
+)
+
 module.exports = router
