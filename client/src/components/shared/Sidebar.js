@@ -22,12 +22,8 @@ const Sidebar = () => {
     const getBoards = async () => {
       try {
         const res = await boardApi.getAll()
-        console.log('res', res[0])
         dispatch(setBoards(res))
-        if(res.length > 0 && boardId === undefined) {
-          // if boards and no boardId show first of boards
-          navigate(`/boards/${res[0].id}`)
-        }
+        
       } catch(err) {
         console.log(err)
       }
@@ -36,13 +32,13 @@ const Sidebar = () => {
   }, [ dispatch ])
 
   useEffect(()=> {
-    console.log(boards)
-  }, [ boards ])
-
-  const updateActive = (listBoards) => {
-    const activeItem = listBoards.findIndex(e=>e.id === boardId)
+    const activeItem = boards.findIndex(e=>e.id === boardId)
+    if(boards.length > 0 && boardId === undefined) {
+      // if boards and no boardId show first of boards
+      navigate(`/boards/${boards[0].id}`)
+    }
     setActiveIndex(activeItem)
-  }
+  }, [ boards, boardId, navigate ])
 
   const logout = ()=> {
     localStorage.removeItem('token')
@@ -92,7 +88,8 @@ const Sidebar = () => {
                 boards.map((item, index)=> (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided, snapshot)=> (
-                      <ListItemButton ref={provided.innerRe}
+                      <ListItemButton 
+                        ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}
                         selected={index === activeIndex}
