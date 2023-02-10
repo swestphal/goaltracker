@@ -30,6 +30,22 @@ router.get('/:boardId',
     boardController.getOne
 )
 
+// @route   Put api/v1/board/:id
+// @desc    Update a single board
+// @access  Protected
+router.put('/:boardId',
+    param('boardId').custom(value => {
+        return new Promise((resolve, reject) => {
+            if (!validation.isObjectId(value)) {
+                return reject(new Error('invalid id'))
+            }
+            resolve()
+        })
+    }),
+    validation.validate,
+    auth.verifyToken,
+    boardController.getOne
+)
 // @route   POST api/v1/board
 // @desc    Create or update board
 // @access  Protected
