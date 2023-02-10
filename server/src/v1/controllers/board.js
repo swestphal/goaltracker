@@ -1,4 +1,6 @@
 const Board = require('./../models/Board')
+const Section = require('./../models/BoardSection')
+const Task = require('./../models/BoardTask')
 
 exports.create = async (req, res) => {
     try {
@@ -17,6 +19,23 @@ exports.getAll = async (req, res) => {
     try {
         const boards = await Board.where({ user: req.user._id }).sort('-position')
         res.status(201).json(boards)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+exports.getOne = async (req, res) => {
+    const { boardId } = req.params
+    try {
+        const board = await Board.findOne({ user: req.user._id, _id: boardId })
+        if (!board) return res.status(404).json('Board not found')
+        const sections = await Section.find({ board: boardId })
+        for (const section of sections) {
+            const tasks = await Task.find({ section: section.id }).populate('section').sort('-position')
+            section._doc.tasks = tasks
+        }
+        board._doc.sections = sections
+        res.status(201).json(board)
     } catch (err) {
         res.status(500).json(err)
     }
