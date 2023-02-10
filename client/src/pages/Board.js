@@ -32,6 +32,30 @@ const Board = () => {
     }
     getBoard()
   },[ boardId ])
+
+  const onIconChange = async (newIcon) => {
+    setIcon(newIcon)
+    // let temp = [ ...boards ]
+    // const index = temp.findIndex(e => e.id === boardId)
+    // temp[index] = { ...temp[index], icon: newIcon }
+
+    // if (isFavourite) {
+    //   let tempFavourite = [ ...favouriteList ]
+    //   const favouriteIndex = tempFavourite.findIndex(e => e.id === boardId)
+    //   tempFavourite[favouriteIndex] = { ...tempFavourite[favouriteIndex], icon: newIcon }
+    //   dispatch(setFavouriteList(tempFavourite))
+    // }
+
+    // setIcon(newIcon)
+    // dispatch(setBoards(temp))
+    // try {
+    //   await boardApi.update(boardId, { icon: newIcon })
+    // } catch (err) {
+    //   alert(err)
+    // }
+  }
+
+  
   return ( 
     <>
       <Box sx={{
@@ -51,7 +75,7 @@ const Board = () => {
       </Box>
       <Box sx={{ padding:'10px 50px' }}>
         <Box>
-          <EmojiPicker/>
+          <EmojiPicker icon={icon} onChange={onIconChange}/>
           <TextField 
             value={title}
             placeholder="Untitled"
