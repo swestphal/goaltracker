@@ -6,6 +6,7 @@ import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import boardApi from '../api/boardApi';
+import EmojiPicker from '../components/shared/EmojiPicker';
 
 const Board = () => {
   const { boardId } = useParams()
@@ -50,8 +51,7 @@ const Board = () => {
       </Box>
       <Box sx={{ padding:'10px 50px' }}>
         <Box>
-          {/* emoji picker */}
-    
+          <EmojiPicker/>
           <TextField 
             value={title}
             placeholder="Untitled"
