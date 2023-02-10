@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box, CircularProgress } from '@mui/material'
 
 const Loading = props => {

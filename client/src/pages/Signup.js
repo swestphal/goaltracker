@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box, Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -7,11 +8,11 @@ import authApi from '../api/authApi'
 const Signup = () => {
   const navigate = useNavigate()
 
-  const [loading, setLoading] = useState(false)
-  const [usernameErrText, setUsernameErrText] = useState('')
-  const [emailErrText, setEmailErrText] = useState('')
-  const [passwordErrText, setPasswordErrText] = useState('')
-  const [confirmPasswordErrText, setConfirmPasswordErrText] = useState('')
+  const [ loading, setLoading ] = useState(false)
+  const [ usernameErrText, setUsernameErrText ] = useState('')
+  const [ emailErrText, setEmailErrText ] = useState('')
+  const [ passwordErrText, setPasswordErrText ] = useState('')
+  const [ confirmPasswordErrText, setConfirmPasswordErrText ] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()

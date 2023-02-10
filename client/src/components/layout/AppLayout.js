@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'

@@ -17,7 +17,10 @@ module.exports = {
   rules: {
     quotes: [
       'error',
-      'single'
+      'single',
+      
+      { 'avoidEscape': true,
+        'allowTemplateLiterals': true }
     ],
     indent: [
       'error',
@@ -25,10 +28,8 @@ module.exports = {
     ],
     'object-curly-spacing': [ 'error', 'always', { 'objectsInObjects': true } ],
     'array-bracket-spacing': [ 'error', 'always', { 'arraysInArrays': false } ],
-    'react/react-in-jsx-scope': 'off',
     'react/no-unescaped-entities': 'off',
     'react/prop-types': 'off',
-    
   },
   settings: {
     react: {
