@@ -13,6 +13,14 @@ router.get('/',
     boardController.getAll
 )
 
+// @route   GET api/v1/boards/favourites
+// @desc    Get all favourites boards
+// @access  Protected
+router.get('/favourites',
+    auth.verifyToken,
+    boardController.getAll
+)
+
 // @route   Get api/v1/board/:id
 // @desc    Get a single board
 // @access  Protected
