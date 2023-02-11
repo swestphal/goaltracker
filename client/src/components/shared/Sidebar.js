@@ -10,6 +10,7 @@ import boardApi from '../../api/boardApi'
 import { setBoards } from '../../redux/features/boardSlice'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useStrictDroppable } from '../../utils/useStrictDroppable'
+import FavouriteList from './FavouriteList'
 
 const Sidebar = () => {
   const [ activeIndex, setActiveIndex ] = useState(0)
@@ -109,6 +110,7 @@ const Sidebar = () => {
           </IconButton>
         </Box>
       </ListItem>
+      <FavouriteList/>
       <ListItem>
         <Box sx={{
           width:'100%',
@@ -117,19 +119,7 @@ const Sidebar = () => {
           justifyContent:'space-between'
         }}>
           <Typography fontWeight='400' fontSize={20}>
-            Favourites
-          </Typography>
-        </Box>
-      </ListItem>    
-      <ListItem>
-        <Box sx={{
-          width:'100%',
-          display:'flex',
-          alignItems:'center',
-          justifyContent:'space-between'
-        }}>
-          <Typography fontWeight='400' fontSize={20}>
-            Favourites
+            Goals
           </Typography>
           <IconButton onClick={addBoard}>
             <AddBoxOutlinedIcon fontSize="small"></AddBoxOutlinedIcon>
@@ -166,7 +156,7 @@ const Sidebar = () => {
                   </Draggable>
                 ))
               }
-
+              {provided.placeholder}
             </div>
           )}
         </Droppable>}
