@@ -9,7 +9,6 @@ import boardApi from '../api/boardApi'
 import EmojiPicker from '../components/shared/EmojiPicker'
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice'
-import { createSerializableStateInvariantMiddleware } from '@reduxjs/toolkit'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -22,6 +21,7 @@ const Board = () => {
   const [ timer, setTimer ] = useState(null)
 
   const boards = useSelector((state)=> state.board.value)
+  const timeout= 1000
 
   useEffect(()=> {
     const getBoard = async()=> {
@@ -40,11 +40,25 @@ const Board = () => {
     getBoard()
   },[ boardId ])
 
-  const onIconChange = async (newIcon) => {
-    setIcon(newIcon)
+  const getCurrentBoardCopy=(key,value)=> {
     let temp = [ ...boards ]
     const index = temp.findIndex(e => e.id === boardId)
-    temp[index] = { ...temp[index], icon: newIcon }
+    temp[index] = { ...temp[index], [key]: value }
+    return temp
+  }
+
+  const updateBoard= async(key,value)=> {
+    const temp = getCurrentBoardCopy(key, value)
+    try {
+      await boardApi.update(boardId, { [key]: value })
+      dispatch(setBoards(temp))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const onIconChange = async (newIcon) => {
+    setIcon(newIcon)
 
     // if (isFavourite) {
     //   let tempFavourite = [ ...favouriteList ]
@@ -53,35 +67,31 @@ const Board = () => {
     //   dispatch(setFavouriteList(tempFavourite))
     // }
 
-    setIcon(newIcon)
-    dispatch(setBoards(temp))
-    try {
-      await boardApi.update(boardId, { icon: newIcon })
-    } catch (err) {
-      console.log(err)
-    }
+    updateBoard('icon', newIcon)
   }
-
+  
   const updateTitle = async(e)=> {
     clearTimeout(timer)
     const newTitle= e.target.value
     setTitle(newTitle)
     
     const newTimer = setTimeout(async ()=> {
-      let temp = [ ...boards ]
-      const index = temp.findIndex(e => e.id === boardId)
-      temp[index] = { ...temp[index], title: newTitle }
-      try {
-        await boardApi.update(boardId, { title: newTitle })
-        dispatch(setBoards(temp))
-      } catch (err) {
-        console.log(err)
-      }
-    },2000)
+      updateBoard('title', newTitle)
+    },timeout)
 
     setTimer(newTimer)
   }
   
+  const updateDescription = async(e)=> {
+    clearTimeout(timer)
+    const newDescription = e.target.value
+    setDescription(newDescription)
+
+    const newTimer = setTimeout(async()=> {
+      updateBoard('description', newDescription)
+    }, timeout)
+    setTimer(newTimer)
+  }
   return ( 
     <>
       <Box sx={{
@@ -117,6 +127,7 @@ const Board = () => {
           </TextField>
           <TextField 
             value={description}
+            onChange={updateDescription}
             placeholder="Add a description"
             variant="outlined"
             multiline
