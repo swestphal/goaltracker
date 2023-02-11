@@ -44,8 +44,9 @@ router.put('/:boardId',
     }),
     validation.validate,
     auth.verifyToken,
-    boardController.getOne
+    boardController.update
 )
+
 // @route   POST api/v1/board
 // @desc    Create or update board
 // @access  Protected
