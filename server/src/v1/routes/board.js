@@ -18,7 +18,7 @@ router.get('/',
 // @access  Protected
 router.get('/favourites',
     auth.verifyToken,
-    boardController.getAll
+    boardController.getFavourites
 )
 
 // @route   Get api/v1/board/:id
