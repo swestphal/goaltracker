@@ -71,4 +71,21 @@ router.put('/',
     boardController.updatePosition
 )
 
+// @route   DELETE api/v1/board
+// @desc    Delete a board, its sections and its tasks
+// @access  Protected
+router.delete('/:boardId',
+    param('boardId').custom(value => {
+        return new Promise((resolve, reject) => {
+            if (!validation.isObjectId(value)) {
+                return reject(new Error('invalid id'))
+            }
+            resolve()
+        })
+    }),
+    validation.validate,
+    auth.verifyToken,
+    boardController.delete
+)
+
 module.exports = router
