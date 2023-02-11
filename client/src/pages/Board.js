@@ -30,7 +30,7 @@ const Board = () => {
         setTitle(board.title)
         setDescription(board.description)
         setSections(board.sections)
-        setIsFavourite(board.isFavourite)
+        setIsFavourite(board.favourite)
         setIcon(board.icon)
         console.log(board)
       } catch (err) {
@@ -92,6 +92,11 @@ const Board = () => {
     }, timeout)
     setTimer(newTimer)
   }
+
+  const addFavourite = async()=> {
+    updateBoard('favourite', !isFavourite)
+    setIsFavourite(!isFavourite)
+  }
   return ( 
     <>
       <Box sx={{
@@ -100,7 +105,7 @@ const Board = () => {
         justifyContent:'space-between',
         width:'100%'
       }}>
-        <IconButton variant='outlined'>
+        <IconButton variant='outlined' onClick={addFavourite}>
           {isFavourite ? (
             <StarOutlinedIcon color = "warning"/>
           ):<StarBorderOutlinedIcon/>}
