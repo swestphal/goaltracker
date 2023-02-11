@@ -9,6 +9,7 @@ import boardApi from '../api/boardApi'
 import EmojiPicker from '../components/shared/EmojiPicker'
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice'
+import { setFavouriteBoards } from '../redux/features/favouriteBoardSlice'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -21,6 +22,8 @@ const Board = () => {
   const [ timer, setTimer ] = useState(null)
 
   const boards = useSelector((state)=> state.board.value)
+  const favouriteBoards = useSelector((state)=> state.favouriteBoard.value)
+  
   const timeout= 1000
 
   useEffect(()=> {
@@ -40,21 +43,50 @@ const Board = () => {
     getBoard()
   },[ boardId ])
 
-  const getCurrentBoardCopy=(key,value)=> {
+  const updateBoardsWithKeyValue=(key,value)=> {
     let temp = [ ...boards ]
     const index = temp.findIndex(e => e.id === boardId)
     temp[index] = { ...temp[index], [key]: value }
     return temp
   }
+  const updateFavouritesWithKeyValue=(key, value)=> {
+    let tempFavourite = [ ...favouriteBoards ]
+    const favouriteIndex = tempFavourite.findIndex(e => e.id === boardId)
+    tempFavourite[favouriteIndex] = { ...tempFavourite[favouriteIndex], [key]: value }
+    return tempFavourite 
+  }
 
-  const updateBoard= async(key,value)=> {
-    const temp = getCurrentBoardCopy(key, value)
+  const updateBoard = async(key,value)=> {
+    const temp = updateBoardsWithKeyValue(key, value)
+   
     try {
-      await boardApi.update(boardId, { [key]: value })
+      const board = await boardApi.update(boardId, { [key]: value }) 
+      if (key === 'favourite') {
+        let newfavouritesBoards = [ ...favouriteBoards ]   
+        
+        if (isFavourite) {
+          // remove element by filtering id
+          newfavouritesBoards = newfavouritesBoards.filter(e => e.id !== boardId)
+        } else {
+          // add element to beginning of newfavouritesBoards
+          newfavouritesBoards.unshift(board)
+        }
+        dispatch(setFavouriteBoards(newfavouritesBoards))
+        setIsFavourite(value)
+      } else {
+        if (isFavourite) {
+          // update in favourite boards
+          const tempFavourite = updateFavouritesWithKeyValue(key, value)
+          dispatch(setFavouriteBoards(tempFavourite))
+        }
+      }
+      // update boards
       dispatch(setBoards(temp))
+      
     } catch (err) {
       console.log(err)
     }
+   
   }
 
   const onIconChange = async (newIcon) => {
