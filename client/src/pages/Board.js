@@ -4,7 +4,7 @@ import StarBorderOutlinedIcon  from '@mui/icons-material/StarBorderOutlined'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import boardApi from '../api/boardApi'
 import EmojiPicker from '../components/shared/EmojiPicker'
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import { setFavouriteBoards } from '../redux/features/favouriteBoardSlice'
 
 const Board = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { boardId } = useParams()
   const [ title, setTitle ] = useState('')
   const [ description, setDescription ] = useState('')
@@ -62,16 +63,16 @@ const Board = () => {
     try {
       const board = await boardApi.update(boardId, { [key]: value }) 
       if (key === 'favourite') {
-        let newfavouritesBoards = [ ...favouriteBoards ]   
+        let newFavouritesBoards = [ ...favouriteBoards ]   
         
         if (isFavourite) {
           // remove element by filtering id
-          newfavouritesBoards = newfavouritesBoards.filter(e => e.id !== boardId)
+          newFavouritesBoards = newFavouritesBoards.filter(e => e.id !== boardId)
         } else {
-          // add element to beginning of newfavouritesBoards
-          newfavouritesBoards.unshift(board)
+          // add element to beginning of newFavouritesBoards
+          newFavouritesBoards.unshift(board)
         }
-        dispatch(setFavouriteBoards(newfavouritesBoards))
+        dispatch(setFavouriteBoards(newFavouritesBoards))
         setIsFavourite(value)
       } else {
         if (isFavourite) {
@@ -91,14 +92,6 @@ const Board = () => {
 
   const onIconChange = async (newIcon) => {
     setIcon(newIcon)
-
-    // if (isFavourite) {
-    //   let tempFavourite = [ ...favouriteList ]
-    //   const favouriteIndex = tempFavourite.findIndex(e => e.id === boardId)
-    //   tempFavourite[favouriteIndex] = { ...tempFavourite[favouriteIndex], icon: newIcon }
-    //   dispatch(setFavouriteList(tempFavourite))
-    // }
-
     updateBoard('icon', newIcon)
   }
   
@@ -129,6 +122,25 @@ const Board = () => {
     updateBoard('favourite', !isFavourite)
     setIsFavourite(!isFavourite)
   }
+
+  const deleteBoard = async () => {
+    try {
+      await boardApi.delete(boardId)
+      if(isFavourite) {
+        const newFavouritesBoards = favouriteBoards.filter(e=>e.id !== boardId)
+        dispatch(setFavouriteBoards(newFavouritesBoards))
+      }
+      const newBoards = boards.filter(e => e.id !== boardId)
+      if(newBoards.length===0) {
+        navigate('/boards')
+      } else {
+        navigate(`/boards/${newBoards[0].id}`)
+      }
+      dispatch(setBoards(newBoards))
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return ( 
     <>
       <Box sx={{
@@ -142,7 +154,7 @@ const Board = () => {
             <StarOutlinedIcon color = "warning"/>
           ):<StarBorderOutlinedIcon/>}
         </IconButton>
-        <IconButton variant="outlined" color="error">
+        <IconButton variant="outlined" color="error" onClick={deleteBoard}>
           <DeleteOutlineIcon/>
         </IconButton>
       </Box>
