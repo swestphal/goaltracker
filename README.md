@@ -26,24 +26,23 @@ Keeps all of your projects in one place.
 ### Backend API
 - [x] express setup (Jan/2023)
 - [x] connect mongo db
-- [x] basic routing with test routes
-- [x] user model
-- [x] request and body validation
-- [x] user registration
-- [x] implement jwt
 - [x] custom auth middleware & jwt verfiy
 - [x] user authentication 
-- [ ] login route
+- [x] login, signup, logout
+- [x] user api
+- [x] board (goals) api
+- [x] section (board) api
+- [ ] task api
 
 
 ### Frontend
 
-- [ ] react setup
-- [ ] layout
-- [ ] page register
-- [ ] page login
+- [x] react setup
+- [x] layout with sidebar
+- [x] page login & register
 - [ ] email setup
 - [ ] registration email
 - [ ] password forgotten email
-
-
+- [x] crud boards (goals)
+- [ ] crud sections (boards)
+- [ ] crud tasks
