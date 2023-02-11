@@ -104,3 +104,43 @@ exports.getFavourites = async (req, res) => {
         res.status(500).json(err)
     }
 }
+
+exports.delete = async (req, res) => {
+    const { boardId } = req.params
+    try {
+        const sections = await Section.find({ board: boardId })
+        for (const section of sections) {
+            await Task.deleteMany({ section: section.id })
+        }
+        await Section.deleteMany({ board: boardId })
+
+        const currentBoard = await Board.findById(boardId)
+        if (currentBoard.favourite) {
+            const favourites = await Board.find({
+                user: currentBoard.user,
+                favourite: true,
+                _id: { $ne: boardId }
+            }).sort('favouritePosition')
+
+            for (const key in favourites) {
+                const element = favourites[key]
+                await Board.findByIdAndUpdate(
+                    element.id,
+                    { $set: { favouritePosition: key } }
+                )
+            }
+        }
+        await Board.deleteOne({ _id: boardId })
+
+        const boards = await Board.find().sort('position')
+        for (const key in boards) {
+            const board = boards[key]
+            await Board.findByIdAndUpdate(
+                board.id,
+                { $set: { position: key } })
+        }
+        res.status(200).json('deleted')
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
