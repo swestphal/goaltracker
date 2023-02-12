@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient'
 
 const boardSection = {
-  create: (boardId) => axiosClient.post(`boards${boardId}/sections`),
-  update: (boardId, sectionId, params)=> axiosClient.put(`boards${boardId}/sections/${sectionId}`,params),
-  delete: (boardId, sectionId) => axiosClient.delete(`boards${boardId}/sections/${sectionId}`)
+  create: (boardId) => axiosClient.post(`board/sections/${boardId}`),
+  update: (boardId, sectionId, params)=> axiosClient.put(`board/sections/${boardId}/${sectionId}`,params),
+  delete: (boardId, sectionId) => axiosClient.delete(`board/sections/${boardId}/${sectionId}`)
 }
 
 export default boardSection
