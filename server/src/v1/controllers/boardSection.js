@@ -1,4 +1,3 @@
-const Board = require('./../models/Board')
 const Section = require('./../models/BoardSection')
 const Task = require('./../models/BoardTask')
 
