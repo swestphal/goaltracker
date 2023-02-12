@@ -107,7 +107,6 @@ exports.getFavourites = async (req, res) => {
 
 exports.delete = async (req, res) => {
     const { boardId } = req.params
-    console.log(boardId)
     try {
         const sections = await Section.find({ board: boardId })
         for (const section of sections) {
