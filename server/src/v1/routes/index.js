@@ -9,7 +9,7 @@ router.use('/profile', require('./profile'))
 router.use('/posts', require('./posts'))
 
 router.use('/boards', require('./board'))
-router.use('/boards/:boardId/sections', require('./boardSection'))
-router.use('/boards/:boardId/tasks', require('./boardTask'))
+router.use('/board/sections', require('./boardSection'))
+router.use('/board/:boardId/tasks', require('./boardTask'))
 
 module.exports = router

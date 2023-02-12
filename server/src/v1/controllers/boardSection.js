@@ -6,9 +6,10 @@ exports.create = async (req, res) => {
     const { boardId } = req.params
     try {
         const section = await Section.create({ board: boardId })
-        section._do.tasks = []
+        section._doc.tasks = []
         res.status(200).json(section)
     } catch (err) {
+        console.log('req', req.params)
         res.status(500).json(err)
     }
 }
