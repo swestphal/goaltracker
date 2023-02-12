@@ -12,7 +12,7 @@ import { setFavouriteBoards } from './../../redux/features/favouriteBoardSlice'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 const Kanban = (props) => {
   const boardId = props.boardId
@@ -26,8 +26,8 @@ const Kanban = (props) => {
     setData(props.data)
   }, [ props.data ])
 
-  const onDragEnd = () => {
-    
+  const onDragEnd = (e) => {
+    console.log(e)
   }
  
   const createSection = async() => {
@@ -86,68 +86,104 @@ const Kanban = (props) => {
       <Divider sx={{ margin:'10p 0' }}/>
       {/* board */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <Box sx={{
-          display:'flex',
-          alignItems:'flex-start',
-          width: 'calc(100vw - 400px)',
-          overflow:'auto'
-        }}>
-          {data.map(section => (
-            <div key={section.id} style={{ width:'300px' }}>
-              <Droppable key={section.id} droppableId={section.id}>
-                {(provided)=> (
-                  <Box
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    sx={{
-                      width:'300px', 
-                      padding:'10px',
-                      marginRight:'10px'
-                    }}>
-                    <Box
-                      sx={{ display: 'flex',
-                        alignItems:'center',
-                        justifyContent:'space-between',
-                        marginBottom:'10px' }}>
-                      <TextField
-                        value={section.title}
-                        placeholder='Untitled'
-                        onChange={(e)=> updateSectionTitle(e,section.id)}
-                        variant='outlined'
+        
+        <Droppable droppableId="all-cards" direction="horizontal" type="card">
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+        
+              <Box sx={{
+                display:'flex',
+                alignItems:'flex-start',
+                width: 'calc(100vw - 400px)',
+                overflow:'auto'
+              }}> 
+        
+                {data.map((section,index )=> (
+                  <Draggable draggableId={section.id} index={index} key={section.id}>
+                    {(provided) => (
+                      <Box
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        id={section.id}
                         sx={{
-                          flexGrow:1,
-                          '& .MuiOutlinedInput-input':{ padding:0 },
-                          '& .MuiOutlinedInput-notchedOutline':{ border:'unset ' },
-                          '& .MuiOutlinedInput-root':{ fontSize:'2rem', fontWeight:'700' }
-                        }}/>
-                      <IconButton 
-                        variant='outlined' 
-                        size='small'
-                        sx={{
-                          color:'gray',
-                          '&:hover': { color:'green' } 
-                        }}>
-                        <AddOutlinedIcon/>
-                      </IconButton>
-                      <IconButton 
-                        variant='outlined' 
-                        size='small'
-                        sx={{
-                          color:'gray',
-                          '&:hover': { color:'red' } 
-                          
+                          border:'1px dashed pink',
+                          margin:'10px',
+                          padding:'10px',
                         }}
-                        onClick={()=> deleteSection(section.id)}>
-                        <DeleteOutlinedIcon/>
-                      </IconButton>
-                    </Box>
-                    {/* Tasks */}
-                  </Box>
-                )}
-              </Droppable>
+                      >
+                        <Box
+                          sx={{ 
+                            display: 'flex',
+                            alignItems:'center',
+                            justifyContent:'space-between',
+                            marginBottom:'10px',
+                            borderBottom:'1px solid #17093e' }}
+                        >
+                          <IconButton {...provided.dragHandleProps} >
+                            <DragIndicatorIcon  />
+                          </IconButton>
+                                 
+                          <TextField
+                            value={section.title}
+                            placeholder='Untitled'
+                            onChange={(e)=> updateSectionTitle(e,section.id)}
+                            variant='outlined'
+                            sx={{
+                              flexGrow:1,
+                              '& .MuiOutlinedInput-input':{ padding:0 },
+                              '& .MuiOutlinedInput-notchedOutline':{ border:'unset ' },
+                              '& .MuiOutlinedInput-root':{ fontSize:'2rem', fontWeight:'700' }
+                            }}/>
+                          <IconButton 
+                            variant='outlined' 
+                            size='small'
+                            sx={{
+                              color:'#17093e',
+                              '&:hover': { color:'white' } 
+                            }}>
+                            <AddOutlinedIcon/>
+                          </IconButton>
+                          <IconButton 
+                            variant='outlined' 
+                            size='small'
+                            sx={{
+                              color:'#17093e',
+                              '&:hover': { color:'red' } 
+                              
+                            }}
+                            onClick={()=> deleteSection(section.id)}>
+                            <DeleteOutlinedIcon/>
+                          </IconButton>
+                        </Box>
+                        <div key={section.id} style={{ width:'300px' }}>
+                          <Droppable key={section.id} droppableId={section.id}>
+                            {(provided,snapshot)=> (
+                              <Box
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                isDraggingOver={snapshot.isDraggingOver}
+                                // sx={{
+                                //   width:'300px', 
+                                //   padding:'10px',
+                                //   marginRight:'10px'
+                                // }}
+                              >
+                                
+                                {/* Tasks */}
+                              </Box>
+                            )}
+                          </Droppable>
+                        </div>
+                      </Box>
+                    )}
+                  </Draggable>
+
+                ))}
+              </Box> 
+              {provided.placeholder}
             </div>
-          ))}
-        </Box>
+          )}
+        </Droppable>
       </DragDropContext>
     </>
   )
