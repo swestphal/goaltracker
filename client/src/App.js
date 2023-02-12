@@ -13,7 +13,7 @@ import Home from './pages/Home'
 import Board from './pages/Board'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
-
+import './css/scrollbar.css'
 function App() {
   const theme = createTheme({
     palette: {
