@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const { schemaOptions } = require('./schemaOptions')
 
 const BoardSectionSchema = new Schema({
-    user: {
+    board: {
         type: Schema.Types.ObjectId,
         ref: 'Board',
         required: true
