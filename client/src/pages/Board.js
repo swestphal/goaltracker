@@ -10,6 +10,7 @@ import EmojiPicker from '../components/shared/EmojiPicker'
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice'
 import { setFavouriteBoards } from '../redux/features/favouriteBoardSlice'
+import Kanban from '../components/shared/Kanban'
 
 const Board = () => {
   const dispatch = useDispatch()
@@ -159,6 +160,7 @@ const Board = () => {
         </IconButton>
       </Box>
       <Box sx={{ padding:'10px 50px' }}>
+        {/* Show and edit emoiji, title and description */}
         <Box>
           <EmojiPicker icon={icon} onChange={onIconChange}/>
           <TextField 
@@ -189,20 +191,8 @@ const Board = () => {
           </TextField>
         </Box>
         <Box>
-          <Box sx={{
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'space-between'
-          }}>
-            <Button>
-            Add Section
-            </Button>
-            <Typography variant="body2" fontWeight="700">
-              {sections.length} Sections
-            </Typography>
-          </Box>
-          <Divider sx={{ margin:'10p 0' }}/>
-          {/* board */}
+          {/* Kanban board */}
+          <Kanban data={sections} boardId={boardId}/>
         </Box>
       </Box>
     </>
