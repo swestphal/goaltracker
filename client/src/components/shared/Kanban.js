@@ -13,11 +13,15 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 
+
 const Kanban = (props) => {
   const boardId = props.boardId
   console.log(boardId)
   const [ data, setData ] = useState([])
-
+  const [ timer, setTimer ] = useState(null)
+  
+  const timeout= 1000
+  
   useEffect(() => {
     setData(props.data)
   }, [ props.data ])
@@ -44,6 +48,25 @@ const Kanban = (props) => {
     } catch (err) {
       console.log(err)
     }
+  }
+  
+
+  const updateSectionTitle = async(e,sectionId) => {
+    clearTimeout(timer)
+    const newSectionTitle = e.target.value
+    const newData = [ ...data ]
+    const index = newData.findIndex(e=> e.id === sectionId)
+    newData[index].title = newSectionTitle
+    setData(newData)
+    const newTimer = setTimeout(async ()=> {
+      try {
+        await boardSectionApi.update(boardId, sectionId, { title:newSectionTitle })
+      } catch (err) {
+        console.log(err)
+      }
+    },timeout)
+
+    setTimer(newTimer)
   }
   return ( 
     <>
@@ -89,6 +112,7 @@ const Kanban = (props) => {
                       <TextField
                         value={section.title}
                         placeholder='Untitled'
+                        onChange={(e)=> updateSectionTitle(e,section.id)}
                         variant='outlined'
                         sx={{
                           flexGrow:1,
