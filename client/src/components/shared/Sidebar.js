@@ -51,12 +51,12 @@ const Sidebar = () => {
     navigate('/login')
   }
 
-  const addBoard = async() => {
+  const createBoard = async() => {
     try {
       const res = await boardApi.create()
       const newList = [ res, ...boards ]
       dispatch(setBoards(newList))
-      navigate('/boards/$(res.id)')
+      navigate(`/boards/${res.id}`)
     } catch (err) {
       console.log(err)
     }
@@ -121,7 +121,7 @@ const Sidebar = () => {
           <Typography fontWeight='400' fontSize={20}>
             Goals
           </Typography>
-          <IconButton onClick={addBoard}>
+          <IconButton onClick={createBoard}>
             <AddBoxOutlinedIcon fontSize="small"></AddBoxOutlinedIcon>
           </IconButton>
         </Box>
