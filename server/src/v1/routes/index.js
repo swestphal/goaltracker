@@ -10,6 +10,6 @@ router.use('/posts', require('./posts'))
 
 router.use('/boards', require('./board'))
 router.use('/board/sections', require('./boardSection'))
-router.use('/board/:boardId/tasks', require('./boardTask'))
+router.use('/board/tasks', require('./boardTask'))
 
 module.exports = router
